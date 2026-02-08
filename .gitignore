@@ -1,0 +1,9 @@
+node_modules
+.vscode
+archive
+dDatadb
+test_deletion_fix.js
+.env
+.env.local
+.env.development
+.env.production
