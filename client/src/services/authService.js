@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5001/api/auth/';
+const API_URL = `${import.meta.env.VITE_API_URL}/api/auth/`;
 
 const login = async (username, password) => {
     // Get deviceId from localStorage or let server handle new device logic
@@ -66,7 +66,7 @@ const subscribeToPush = async (subscription) => {
     if (!user || !user.token) return;
 
     try {
-        await axios.post('http://localhost:5001/api/notifications/subscribe', subscription, {
+        await axios.post(`${import.meta.env.VITE_API_URL}/api/notifications/subscribe`, subscription, {
             headers: {
                 Authorization: `Bearer ${user.token}`,
             },

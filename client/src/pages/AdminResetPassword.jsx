@@ -6,6 +6,8 @@ import Sidebar from '../components/Sidebar';
 import { Lock, User, CheckCircle, AlertTriangle } from 'lucide-react';
 import RangeService from '../services/rangeService';
 
+const API = import.meta.env.VITE_API_URL;
+
 const AdminResetPassword = () => {
     const { user } = useContext(AuthContext);
     const [ranges, setRanges] = useState([]);
@@ -63,7 +65,7 @@ const AdminResetPassword = () => {
                 }
             };
 
-            await axios.post('http://localhost:5001/api/ranges/reset-password', {
+            await axios.post(`${API}/api/ranges/reset-password`, {
                 userId: selectedRange,
                 newPassword
             }, config);

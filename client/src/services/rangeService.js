@@ -1,7 +1,7 @@
 import axios from 'axios';
 import AuthService from './authService';
 
-const API_URL = 'http://localhost:5001/api/ranges';
+const API_URL = `${import.meta.env.VITE_API_URL}/api/ranges`;
 
 const getAuthHeader = () => {
     const user = AuthService.getCurrentUser();

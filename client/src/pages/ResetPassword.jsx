@@ -3,6 +3,8 @@ import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Lock, CheckCircle } from 'lucide-react';
 
+const API = import.meta.env.VITE_API_URL;
+
 const ResetPassword = () => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -32,7 +34,7 @@ const ResetPassword = () => {
         setIsLoading(true);
 
         try {
-            const { data } = await axios.put(`http://localhost:5001/api/auth/resetpassword/${resetToken}`, { password });
+            const { data } = await axios.put(`${API}/api/auth/resetpassword/${resetToken}`, { password });
             setMessage(data.message);
             setIsSuccess(true);
             setTimeout(() => navigate('/login'), 3000);

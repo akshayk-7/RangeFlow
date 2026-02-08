@@ -6,6 +6,8 @@ import AuthContext from '../context/AuthContext';
 import SocketContext from '../context/SocketContext';
 import Skeleton from './Skeleton';
 
+const API = import.meta.env.VITE_API_URL;
+
 const ModalOverlay = styled.div`
     position: fixed;
     top: 0;
@@ -168,7 +170,7 @@ const ActivityModal = ({ onClose }) => {
     const fetchActivity = async () => {
         try {
             // Updated Endpoint
-            const res = await axios.get(`http://localhost:5001/api/ranges/${user._id}/activity`, {
+            const res = await axios.get(`${API}/api/ranges/${user._id}/activity`, {
                 headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
             });
             setActivities(res.data);

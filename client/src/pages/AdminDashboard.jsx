@@ -13,6 +13,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAlert } from '../context/AlertContext'; // Import useAlert
 
+const API = import.meta.env.VITE_API_URL;
+
 const AdminDashboard = () => {
     const [activeTab, setActiveTab] = useState('ranges');
     const [ranges, setRanges] = useState([]);
@@ -85,7 +87,7 @@ const AdminDashboard = () => {
 
     useEffect(() => {
         // Connect Socket
-        socketRef.current = io('http://localhost:5001');
+        socketRef.current = io(API);
 
         socketRef.current.on('connect', () => {
             console.log('Connected to socket for activity logs');
@@ -263,7 +265,7 @@ const AdminDashboard = () => {
                 console.log("Deleting ID:", rangeId);
 
                 await axios.delete(
-                    `/api/ranges/${rangeId}`,
+                    `${API}/api/ranges/${rangeId}`,
                     {
                         headers: {
                             Authorization: `Bearer ${token}`

@@ -3,6 +3,8 @@ import axios from 'axios';
 import { ArrowLeft, Mail } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
+const API = import.meta.env.VITE_API_URL;
+
 const ForgotPassword = () => {
     const [loginInput, setLoginInput] = useState(''); // Username or Email
     const [message, setMessage] = useState('');
@@ -16,7 +18,7 @@ const ForgotPassword = () => {
         setIsLoading(true);
 
         try {
-            const { data } = await axios.post('http://localhost:5001/api/auth/forgotpassword', { loginInput });
+            const { data } = await axios.post(`${API}/api/auth/forgotpassword`, { loginInput });
             setMessage(data.message);
         } catch (err) {
             setError(err.response?.data?.message || 'Something went wrong. Please try again.');
