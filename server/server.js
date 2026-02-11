@@ -41,7 +41,8 @@ if (process.env.VAPID_PUBLIC_KEY && process.env.VAPID_PRIVATE_KEY) {
 
 const io = new Server(server, {
     cors: {
-        origin: "http://localhost:5173",
+        origin: "https://rangeflow.netlify.app",
+
         methods: ["GET", "POST"]
     }
 });
