@@ -3,7 +3,9 @@ import styled from 'styled-components';
 import { X, Clock, Activity, LogIn, LogOut, Send, Inbox, Check } from 'lucide-react';
 import axios from 'axios';
 import AuthContext from '../context/AuthContext';
-import SocketContext from '../context/SocketContext';
+import AuthContext from '../context/AuthContext';
+// import SocketContext from '../context/SocketContext';
+import { socket } from '../socket';
 import Skeleton from './Skeleton';
 
 const API = import.meta.env.VITE_API_URL;
@@ -163,7 +165,7 @@ const EmptyState = styled.div`
 
 const ActivityModal = ({ onClose }) => {
     const { user } = useContext(AuthContext);
-    const { socket } = useContext(SocketContext);
+    // const { socket } = useContext(SocketContext);
     const [activities, setActivities] = useState([]);
     const [loading, setLoading] = useState(true);
 

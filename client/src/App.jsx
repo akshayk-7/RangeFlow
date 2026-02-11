@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
-import { SocketProvider } from './context/SocketContext'; // Import SocketProvider
+// import { SocketProvider } from './context/SocketContext'; // Import SocketProvider
 import { AlertProvider } from './context/AlertContext'; // Import AlertProvider
 import AuthContext from './context/AuthContext';
 import Login from './pages/Login';
@@ -48,46 +48,45 @@ function App() {
         <Router>
             <AuthProvider>
                 <AlertProvider>
-                    <SocketProvider>
-                        <Routes>
-                            <Route path="/" element={<LandingPage />} />
-                            <Route path="/login" element={<Login />} />
+                    <Routes>
+                        <Route path="/" element={<LandingPage />} />
+                        <Route path="/login" element={<Login />} />
 
-                            {/* Regular Dashboard */}
-                            <Route
-                                path="/dashboard"
-                                element={
-                                    <ProtectedRoute>
-                                        <TaskDashboard />
-                                    </ProtectedRoute>
-                                }
-                            />
+                        {/* Regular Dashboard */}
+                        <Route
+                            path="/dashboard"
+                            element={
+                                <ProtectedRoute>
+                                    <TaskDashboard />
+                                </ProtectedRoute>
+                            }
+                        />
 
-                            {/* Admin Dashboard */}
-                            <Route
-                                path="/admin"
-                                element={
-                                    <AdminRoute>
-                                        <AdminDashboard />
-                                    </AdminRoute>
-                                }
-                            />
-                            <Route
-                                path="/admin/reset-password"
-                                element={
-                                    <AdminRoute>
-                                        <AdminResetPassword />
-                                    </AdminRoute>
-                                }
-                            />
+                        {/* Admin Dashboard */}
+                        <Route
+                            path="/admin"
+                            element={
+                                <AdminRoute>
+                                    <AdminDashboard />
+                                </AdminRoute>
+                            }
+                        />
+                        <Route
+                            path="/admin/reset-password"
+                            element={
+                                <AdminRoute>
+                                    <AdminResetPassword />
+                                </AdminRoute>
+                            }
+                        />
 
-                            <Route path="/forgot-password" element={<ForgotPassword />} />
-                            <Route path="/reset-password/:token" element={<ResetPassword />} />
-                        </Routes>
-                    </SocketProvider>
+                        <Route path="/forgot-password" element={<ForgotPassword />} />
+                        <Route path="/reset-password/:token" element={<ResetPassword />} />
+                    </Routes>
+
                 </AlertProvider>
             </AuthProvider>
-        </Router>
+        </Router >
     )
 }
 

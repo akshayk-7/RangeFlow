@@ -11,12 +11,13 @@ import { Inbox, Send, Bell, Users, PenLine, Check, Clock, Sun, Moon, LogOut, Has
 import CustomSelect from '../components/CustomSelect';
 import Skeleton from '../components/Skeleton';
 import ActivityModal from '../components/ActivityModal';  // Import
+import { socket } from '../socket'; // Import singleton socket
 
 import { useAlert } from '../context/AlertContext'; // Import useAlert
 
 const TaskDashboard = () => {
     const { user } = useContext(AuthContext);
-    const { socket } = useContext(SocketContext);
+    // const { socket } = useContext(SocketContext); // Removed context usage
     const navigate = useNavigate();
     const searchInputRef = useRef(null);
 
@@ -174,7 +175,9 @@ const TaskDashboard = () => {
 
     useEffect(() => {
         loadInitialData();
+    }, []);
 
+    useEffect(() => {
         const initNotifications = async () => {
             // 1. Session Guard
             if (sessionStorage.getItem('notification_permission_checked')) {
@@ -210,32 +213,37 @@ const TaskDashboard = () => {
         };
 
         initNotifications();
+    }, []);
 
-        if (socket) {
-            console.log(socket.id); // Debug: Ensure only one socket ID prints
-
-            const handleNewNote = (newTask) => {
-                toast.info(`New note from ${newTask.fromRangeId.rangeName}`);
-                setReceivedTasks(prev => [newTask, ...prev]);
-                setLiveStatus('Updated just now');
-                setTimeout(() => setLiveStatus('Live'), 4000);
-            };
-
-            const handleReadReceipt = ({ taskId }) => {
-                console.log('Task read:', taskId);
-                setLiveStatus('Updated just now');
-                setTimeout(() => setLiveStatus('Live'), 4000);
-            };
-
-            socket.on('new_note', handleNewNote);
-            socket.on('task_read_receipt', handleReadReceipt);
-
-            return () => {
-                socket.off('new_note', handleNewNote);
-                socket.off('task_read_receipt', handleReadReceipt);
-            };
+    useEffect(() => {
+        if (user?._id) {
+            socket.emit("join_room", user._id);
         }
-    }, [socket]);
+    }, [user]);
+
+    useEffect(() => {
+        const handleNewNote = (newTask) => {
+            console.log("Real-time note received:", newTask);
+            toast.info(`New note from ${newTask.fromRangeId.rangeName}`);
+            setReceivedTasks(prev => [newTask, ...prev]);
+            setLiveStatus('Updated just now');
+            setTimeout(() => setLiveStatus('Live'), 4000);
+        };
+
+        const handleReadReceipt = ({ taskId }) => {
+            console.log('Task read:', taskId);
+            setLiveStatus('Updated just now');
+            setTimeout(() => setLiveStatus('Live'), 4000);
+        };
+
+        socket.on('new_note', handleNewNote);
+        socket.on('task_read_receipt', handleReadReceipt);
+
+        return () => {
+            socket.off('new_note', handleNewNote);
+            socket.off('task_read_receipt', handleReadReceipt);
+        };
+    }, []);
 
 
 
