@@ -6,7 +6,7 @@ module.exports = (io) => {
         console.log(`User Connected: ${socket.id}`);
 
         // Join specific room for the range
-        socket.on('join_range', (rangeId) => {
+        socket.on('join_room', (rangeId) => {
             socket.join(rangeId);
             console.log(`User with ID: ${socket.id} joined room: ${rangeId}`);
         });

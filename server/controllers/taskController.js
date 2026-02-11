@@ -25,7 +25,7 @@ const sendTask = async (req, res) => {
         // Send Push Notification
         const io = req.app.get('io');
         if (io) {
-            io.to(task.toRangeId.toString()).emit('newNote', savedTask);
+            io.to(task.toRangeId.toString()).emit('new_note', savedTask);
         }
 
         // Log Activity

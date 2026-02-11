@@ -17,7 +17,7 @@ export const SocketProvider = ({ children }) => {
             newSocket.on('connect', () => {
                 console.log('Socket connected:', newSocket.id);
                 // Join the range's specific room
-                newSocket.emit('join_range', user._id);
+                newSocket.emit('join_room', user._id);
             });
 
             return () => newSocket.close();

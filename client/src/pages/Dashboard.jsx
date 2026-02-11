@@ -227,11 +227,11 @@ const TaskDashboard = () => {
                 setTimeout(() => setLiveStatus('Live'), 4000);
             };
 
-            socket.on('newNote', handleNewNote);
+            socket.on('new_note', handleNewNote);
             socket.on('task_read_receipt', handleReadReceipt);
 
             return () => {
-                socket.off('newNote', handleNewNote);
+                socket.off('new_note', handleNewNote);
                 socket.off('task_read_receipt', handleReadReceipt);
             };
         }
