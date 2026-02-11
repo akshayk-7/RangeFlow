@@ -212,26 +212,29 @@ const TaskDashboard = () => {
         initNotifications();
 
         if (socket) {
-            socket.on('receive_task', (newTask) => {
+            console.log(socket.id); // Debug: Ensure only one socket ID prints
+
+            const handleNewNote = (newTask) => {
                 toast.info(`New note from ${newTask.fromRangeId.rangeName}`);
                 setReceivedTasks(prev => [newTask, ...prev]);
                 setLiveStatus('Updated just now');
                 setTimeout(() => setLiveStatus('Live'), 4000);
-            });
+            };
 
-            socket.on('task_read_receipt', ({ taskId }) => {
+            const handleReadReceipt = ({ taskId }) => {
                 console.log('Task read:', taskId);
-                setLiveStatus('Updated just now'); // Also update on read receipt if desired, or maybe just 'Live'
+                setLiveStatus('Updated just now');
                 setTimeout(() => setLiveStatus('Live'), 4000);
-            });
-        }
+            };
 
-        return () => {
-            if (socket) {
-                socket.off('receive_task');
-                socket.off('task_read_receipt');
-            }
-        };
+            socket.on('newNote', handleNewNote);
+            socket.on('task_read_receipt', handleReadReceipt);
+
+            return () => {
+                socket.off('newNote', handleNewNote);
+                socket.off('task_read_receipt', handleReadReceipt);
+            };
+        }
     }, [socket]);
 
 
