@@ -19,27 +19,25 @@ self.addEventListener("push", (event) => {
     );
 });
 
-self.addEventListener("notificationclick", (event) => {
+self.addEventListener("notificationclick", function (event) {
     event.notification.close();
 
-    const targetUrl = new URL(event.notification.data.url || '/dashboard', self.location.origin).href;
-
     event.waitUntil(
-        clients.matchAll({
-            type: "window",
-            includeUncontrolled: true
-        }).then((clientList) => {
-            // Look for a tab that includes the dashboard path
-            for (const client of clientList) {
-                if (client.url.includes("/dashboard") && "focus" in client) {
-                    return client.focus();
-                }
-            }
+        clients.matchAll({ type: "window", includeUncontrolled: true })
+            .then(function (clientList) {
 
-            // If no tab found, open new window
-            if (clients.openWindow) {
-                return clients.openWindow(targetUrl);
-            }
-        })
+                for (let i = 0; i < clientList.length; i++) {
+                    const client = clientList[i];
+
+                    if (client.url.includes(self.location.origin) && "focus" in client) {
+                        client.navigate("/dashboard");
+                        return client.focus();
+                    }
+                }
+
+                if (clients.openWindow) {
+                    return clients.openWindow("/dashboard");
+                }
+            })
     );
 });

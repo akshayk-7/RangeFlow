@@ -214,7 +214,7 @@ const TaskDashboard = () => {
         if (socket) {
             socket.on('receive_task', (newTask) => {
                 toast.info(`New note from ${newTask.fromRangeId.rangeName}`);
-                loadTasks();
+                setReceivedTasks(prev => [newTask, ...prev]);
                 setLiveStatus('Updated just now');
                 setTimeout(() => setLiveStatus('Live'), 4000);
             });
@@ -259,9 +259,7 @@ const TaskDashboard = () => {
                 title: 'New Note'
             });
 
-            if (socket) {
-                socket.emit('send_task', savedTask);
-            }
+
 
             toast.success('Note sent successfully!');
             setMsgData({ toRangeId: '', kgid: '', priority: 'Medium', message: '' });
